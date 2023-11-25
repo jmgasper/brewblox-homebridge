@@ -9,8 +9,8 @@ import pytest
 from brewblox_service import mqtt, scheduler
 from brewblox_service.testing import matching
 
-from YOUR_PACKAGE import subscribe_example
-from YOUR_PACKAGE.models import ServiceConfig
+from brewblox_homebridge import subscribe_example
+from brewblox_homebridge.models import ServiceConfig
 
 TESTED = subscribe_example.__name__
 

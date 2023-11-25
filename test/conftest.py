@@ -10,7 +10,7 @@ import pytest
 from aiohttp import test_utils
 from brewblox_service import brewblox_logger, features, service, testing
 
-from YOUR_PACKAGE.models import ServiceConfig
+from brewblox_homebridge.models import ServiceConfig
 
 LOGGER = brewblox_logger(__name__)
 
