@@ -22,4 +22,4 @@ RUN set -ex \
     && rm -rf /wheeley \
     && pip3 freeze
 
-ENTRYPOINT ["python3", "-m", "your_package"]
+ENTRYPOINT ["python3", "-m", "brewblox_homebridge"]

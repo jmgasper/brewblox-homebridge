@@ -1,14 +1,9 @@
-"""
-Example on how to listen to MQTT events.
-
-For an example on how to publish events, see publish_example.py
-"""
 
 
 from aiohttp import web
 from brewblox_service import brewblox_logger, features, mqtt
 
-from YOUR_PACKAGE.models import ServiceConfig
+from brewblox_homebridge.models import ServiceConfig
 
 LOGGER = brewblox_logger(__name__)
 

@@ -6,8 +6,8 @@ from argparse import ArgumentParser
 
 from brewblox_service import brewblox_logger, http, mqtt, scheduler, service
 
-from YOUR_PACKAGE import http_example, publish_example, subscribe_example
-from YOUR_PACKAGE.models import ServiceConfig
+from brewblox_homebridge import http_example, subscribe_example
+from brewblox_homebridge.models import ServiceConfig
 
 LOGGER = brewblox_logger(__name__)
 
@@ -17,7 +17,7 @@ def create_parser() -> ArgumentParser:
     # We can add more arguments here before sending the parser back to brewblox-service
     # The parsed values for all arguments are placed in app['config']
     # For documentation see https://docs.python.org/3/library/argparse.html
-    parser: ArgumentParser = service.create_parser(default_name='YOUR_PACKAGE')
+    parser: ArgumentParser = service.create_parser(default_name='brewblox_homebridge')
 
     # This will be used by publish_example
     # Note how we specify the type as float
@@ -64,7 +64,7 @@ def main():
         # In setup() they register everything that must be done before the service starts
         # It's not required to use this pattern, but it makes code easier to understand
         subscribe_example.setup(app)
-        publish_example.setup(app)
+        #publish_example.setup(app)
         http_example.setup(app)
 
     # This will start the service.
