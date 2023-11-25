@@ -11,3 +11,10 @@ class ServiceConfig(BaseServiceConfig):
     and adds the arguments that were added to the parser in __main__.py
     """
     poll_interval: float
+    block_name: str
+    homebridge_host: str
+    homebridge_port: str
+    homebridge_auth_code: str
+    homebridge_device: str
+    service: str
+

@@ -10,6 +10,7 @@ readme = "README.md"
 python = ">=3.9,<4"
 brewblox-service = "^3.1.2"
 cryptography = "40.0.1"
+requests = "^2.31.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "*"

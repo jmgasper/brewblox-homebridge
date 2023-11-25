@@ -18,7 +18,7 @@ WORKDIR /app
 COPY --from=base /wheeley /wheeley
 
 RUN set -ex \
-    && pip3 install --no-index --find-links=/wheeley YOUR-PACKAGE \
+    && pip3 install --no-index --find-links=/wheeley brewblox_homebridge \
     && rm -rf /wheeley \
     && pip3 freeze
 

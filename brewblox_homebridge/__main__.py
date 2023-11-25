@@ -6,7 +6,7 @@ from argparse import ArgumentParser
 
 from brewblox_service import brewblox_logger, http, mqtt, scheduler, service
 
-from brewblox_homebridge import http_example, subscribe_example
+from brewblox_homebridge import subscribe
 from brewblox_homebridge.models import ServiceConfig
 
 LOGGER = brewblox_logger(__name__)
@@ -26,6 +26,35 @@ def create_parser() -> ArgumentParser:
                         type=float,
                         default=5)
 
+    # This will be used to map the block name to a Homebridge device name
+    parser.add_argument('--block-name',
+                        help='The Brewblox block name to monitor',
+                        type=str)
+
+    # The hostname of the Homebridge server
+    parser.add_argument('--homebridge_host',
+                        help='The Homebridge host URL / FQDN',
+                        type=str)
+
+    # The port of the Homebridge server
+    parser.add_argument('--homebridge_port',
+                        help='The Homebridge port',
+                        type=str)
+
+    # The auth code to use when authenticating with Homebridge
+    parser.add_argument('--homebridge_auth_code',
+                        help='The Homebridge auth code',
+                        type=str)
+
+    # The homebridge device to map to the block name
+    parser.add_argument('--homebridge_device',
+                        help='The Homebridge device name',
+                        type=str)
+
+    # The Brewblox service that holds the block
+    parser.add_argument('--service',
+                        help='The Brewblox service where the block lives',
+                        type=str)
     return parser
 
 
@@ -63,9 +92,8 @@ def main():
         # To keep everything consistent, examples also have the setup() function
         # In setup() they register everything that must be done before the service starts
         # It's not required to use this pattern, but it makes code easier to understand
-        subscribe_example.setup(app)
+        subscribe.setup(app)
         #publish_example.setup(app)
-        http_example.setup(app)
 
     # This will start the service.
     # The function blocks until you stop the process (container).
@@ -84,7 +112,7 @@ def main():
     #
     # The default value is "YOUR_PACKAGE" (provided in service.create_app()).
     # This means you can now access the example/endpoint as "/YOUR_PACKAGE/example/endpoint"
-    service.run_app(app, setup())
+    service.run_app(app, setup(), listen_http=False)
 
 
 if __name__ == '__main__':

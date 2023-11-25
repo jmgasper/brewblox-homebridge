@@ -8,7 +8,7 @@ on:
   workflow_dispatch: {}
 
 env:
-  DOCKER_IMAGE: ghcr.io/you/your-package
+  DOCKER_IMAGE: ghcr.io/jmgasper/brewblox-homebridge
 
 jobs:
   build:
