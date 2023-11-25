@@ -41,7 +41,7 @@ class SubscribingFeature(features.ServiceFeature):
         data = json.loads(payload)
         if(data['key']==self.config.service and self.config.block_name in data['data'].keys()):
             block = data['data'][self.config.block_name]
-            LOGGER.debug(self.config.block_name + " " + block)
+            LOGGER.debug(self.config.block_name + " " + json.dumps(block))
             # Turn on or off, depending on desired state
             changed = False
             if(block['desiredState'] == 1 and (block['state']==None or block['state']==0)):
@@ -65,7 +65,6 @@ class SubscribingFeature(features.ServiceFeature):
                         }))
         else:
             LOGGER.error("Couldn't find block name " + self.config.block_name + " to map to Homebridge")
-            LOGGER.error(json.dumps(data))
 
 
 def setup(app: web.Application):

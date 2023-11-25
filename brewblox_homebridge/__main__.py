@@ -32,22 +32,22 @@ def create_parser() -> ArgumentParser:
                         type=str)
 
     # The hostname of the Homebridge server
-    parser.add_argument('--homebridge_host',
+    parser.add_argument('--homebridge-host',
                         help='The Homebridge host URL / FQDN',
                         type=str)
 
     # The port of the Homebridge server
-    parser.add_argument('--homebridge_port',
+    parser.add_argument('--homebridge-port',
                         help='The Homebridge port',
                         type=str)
 
     # The auth code to use when authenticating with Homebridge
-    parser.add_argument('--homebridge_auth_code',
+    parser.add_argument('--homebridge-auth-code',
                         help='The Homebridge auth code',
                         type=str)
 
     # The homebridge device to map to the block name
-    parser.add_argument('--homebridge_device',
+    parser.add_argument('--homebridge-device',
                         help='The Homebridge device name',
                         type=str)
 
