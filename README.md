@@ -15,3 +15,20 @@ You need to provide:
 * `homebridge-auth-code` - the auth code of the Homebridge server, retrieved from the Homebridge server homepage
 * `homebridge-device` - the name of the Homebridge device / swtich that will be controlled by the digital actuator block
 * `service` - the name of the Brewblox service that contains the block-name
+
+### Sample docker-compose entry
+
+To add the setup to your docker-compose, a sample entry looks like this:
+
+```
+  boil-heating-element:
+    image: ghcr.io/jmgasper/brewblox-homebridge:develop
+    privileged: true
+    restart: unless-stopped
+    command: --port 5002 --mqtt-host=192.168.1.36 --block-name="Boil Heating Element" --homebridge-host="192.168.1.158" --homebridge-port=51887 --homebridge-auth-code="123-45-678" --homebridge-device="Brew Elements left" --service="brew-room"
+    volumes:
+    - type: bind
+      source: /etc/localtime
+      target: /etc/localtime
+      read_only: true
+```
