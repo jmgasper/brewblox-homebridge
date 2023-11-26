@@ -57,7 +57,6 @@ class SubscribingFeature(features.ServiceFeature):
 
         if(data['key']==self.config.service and self.config.block_name in data['data'].keys()):
             block = data['data'][self.config.block_name]
-            LOGGER.info(self.config.block_name + " " + json.dumps(block))
             # Turn on or off, depending on desired state
             changed = False
             if(block['desiredState'] == 1 and (block['state']==None or block['state']==0 or self.current_state==0)):
@@ -86,7 +85,9 @@ class SubscribingFeature(features.ServiceFeature):
 def setup(app: web.Application):
     # We register our feature here
     # It will now be automatically started when the service starts
+    LOGGER.info("Staring brewblox-homebridge setup")
     features.add(app, SubscribingFeature(app))
+    LOGGER.info("Setup successful")
 
 
 def fget(app: web.Application) -> SubscribingFeature:
