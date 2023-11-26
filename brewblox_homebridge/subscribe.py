@@ -26,6 +26,7 @@ class SubscribingFeature(features.ServiceFeature):
 
         You can set multiple listeners for each call to subscribe, and use wildcards to filter messages.
         """
+        LOGGER.info("Starting up brewblox_homebridge plugin")
         failed = True
         while(failed):
             try:
@@ -39,7 +40,7 @@ class SubscribingFeature(features.ServiceFeature):
                 LOGGER.error("Retrying...")
                 time.sleep(3)
                 failed = True
-
+        LOGGER.info("Startup successful")
 
     async def shutdown(self, app: web.Application):
         """Shutdown and remove event handlers
@@ -56,7 +57,7 @@ class SubscribingFeature(features.ServiceFeature):
 
         if(data['key']==self.config.service and self.config.block_name in data['data'].keys()):
             block = data['data'][self.config.block_name]
-            print(self.config.block_name + " " + json.dumps(block))
+            LOGGER.info(self.config.block_name + " " + json.dumps(block))
             # Turn on or off, depending on desired state
             changed = False
             if(block['desiredState'] == 1 and (block['state']==None or block['state']==0 or self.current_state==0)):
