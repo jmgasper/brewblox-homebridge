@@ -1,4 +1,5 @@
 from aiohttp import web
+import time
 import json
 from brewblox_homebridge.homebridge.HomeBridgeController import *
 from brewblox_service import brewblox_logger, features, mqtt
@@ -16,7 +17,7 @@ class SubscribingFeature(features.ServiceFeature):
             self.controller = HomeBridgeController(self.config.homebridge_host, self.config.homebridge_port, self.config.homebridge_auth_code)
             LOGGER.debug(self.controller.accessories)
         except Exception as e:
-            LOGGER.error("Couldn't connect to Homebridge", e)
+            LOGGER.error("Couldn't connect to Homebridge " + e)
 
     async def startup(self, app: web.Application):
         """Add event handling
@@ -25,10 +26,21 @@ class SubscribingFeature(features.ServiceFeature):
 
         You can set multiple listeners for each call to subscribe, and use wildcards to filter messages.
         """
-        await mqtt.listen(app, self.topic, self.on_message)
-        await mqtt.subscribe(app, self.topic)
-        self.current_state = int(self.controller.get_value(self.config.homebridge_device))
-        print("Current switch state:", self.current_state)
+        failed = True
+        while(failed):
+            try:
+                await mqtt.listen(app, self.topic, self.on_message)
+                await mqtt.subscribe(app, self.topic)
+                self.current_state = int(self.controller.get_value(self.config.homebridge_device))
+                print("Current switch state:", self.current_state)
+                failed = False
+            except Exception as e:
+                LOGGER.error("Error during startup: " + e)
+                LOGGER.error("Retrying...")
+                time.sleep(3)
+                failed = True
+
+
     async def shutdown(self, app: web.Application):
         """Shutdown and remove event handlers
 
