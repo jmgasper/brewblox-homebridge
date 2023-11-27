@@ -32,8 +32,8 @@ class SubscribingFeature(features.ServiceFeature):
             try:
                 await mqtt.listen(app, self.topic, self.on_message)
                 await mqtt.subscribe(app, self.topic)
-                self.current_state = int(self.controller.get_value(self.config.homebridge_device))
-                print("Current switch state:", self.current_state)
+                #self.current_state =
+                LOGGER.info("Current switch state: " + str(int(self.controller.get_value(self.config.homebridge_device))))
                 failed = False
             except Exception as e:
                 LOGGER.error("Error during startup: " + e)
@@ -53,18 +53,29 @@ class SubscribingFeature(features.ServiceFeature):
 
     async def on_message(self, topic: str, payload: str):
         data = json.loads(payload)
-        self.current_state = int(self.controller.get_value(self.config.homebridge_device))
+        #self.current_state = int(self.controller.get_value(self.config.homebridge_device))
 
         if(data['key']==self.config.service and self.config.block_name in data['data'].keys()):
             block = data['data'][self.config.block_name]
             # Turn on or off, depending on desired state
             changed = False
-            if(block['desiredState'] == 1 and (block['state']==None or block['state']==0 or self.current_state==0)):
+            if(block['desiredState'] == 1 and (block['state']==None or block['state']==0 or int(self.controller.get_value(self.config.homebridge_device))==0)):
                 self.controller.set_value(self.config.homebridge_device, True)
+                while(int(self.controller.get_value(self.config.homebridge_device, refresh=True))==0):
+                    LOGGER.debug("Waiting for switch....")
+                    time.sleep(1)
+                LOGGER.debug("Switch turned on successfully")
+                #self.current_state = 1
                 block['state']=1
                 changed = True
-            elif(block['desiredState'] == 0 and (block['state']==None or block['state']==1 or self.current_state==1)):
+            elif(block['desiredState'] == 0 and (block['state']==None or block['state']==1 or int(self.controller.get_value(self.config.homebridge_device))==1)):
                 self.controller.set_value(self.config.homebridge_device, False)
+                while(int(self.controller.get_value(self.config.homebridge_device, refresh=True))==1):
+                    LOGGER.debug("Waiting for switch....")
+                    time.sleep(1)
+                LOGGER.debug("Switch turned off successfully")
+                #self.current_state = 0
+
                 block['state']=0
                 changed = True
 
