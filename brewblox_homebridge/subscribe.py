@@ -60,19 +60,22 @@ class SubscribingFeature(features.ServiceFeature):
             # Turn on or off, depending on desired state
             changed = False
             if(block['desiredState'] == 1 and (block['state']==None or block['state']==0 or int(self.controller.get_value(self.config.homebridge_device))==0)):
-                self.controller.set_value(self.config.homebridge_device, True)
                 while(int(self.controller.get_value(self.config.homebridge_device, refresh=True))==0):
                     LOGGER.debug("Waiting for switch....")
                     time.sleep(1)
+                    self.controller.set_value(self.config.homebridge_device, True)
                 LOGGER.debug("Switch turned on successfully")
                 #self.current_state = 1
                 block['state']=1
                 changed = True
             elif(block['desiredState'] == 0 and (block['state']==None or block['state']==1 or int(self.controller.get_value(self.config.homebridge_device))==1)):
                 self.controller.set_value(self.config.homebridge_device, False)
+
                 while(int(self.controller.get_value(self.config.homebridge_device, refresh=True))==1):
                     LOGGER.debug("Waiting for switch....")
                     time.sleep(1)
+                    self.controller.set_value(self.config.homebridge_device, False)
+
                 LOGGER.debug("Switch turned off successfully")
                 #self.current_state = 0
 
@@ -89,9 +92,6 @@ class SubscribingFeature(features.ServiceFeature):
                             'key': self.config.service,
                             'data': data['data']
                         }))
-        else:
-            LOGGER.error("Couldn't find block name " + self.config.block_name + " to map to Homebridge")
-
 
 def setup(app: web.Application):
     # We register our feature here
